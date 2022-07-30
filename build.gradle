@@ -1,0 +1,40 @@
+plugins {
+	id 'org.springframework.boot' version '3.0.0-SNAPSHOT'
+	id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+	id 'java'
+}
+
+group = 'com.revined'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '18'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+	maven { url 'https://repo.spring.io/milestone' }
+	maven { url 'https://repo.spring.io/snapshot' }
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation ('org.springframework.boot:spring-boot-starter-web') {
+		exclude group: 'org.springframework.boot', module: 'spring-boot-starter-json'
+	}
+	implementation 'org.flywaydb:flyway-core'
+	implementation 'com.google.code.gson:gson:2.9.0'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
