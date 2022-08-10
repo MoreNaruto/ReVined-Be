@@ -1,4 +1,4 @@
-package com.revined.springboot.config;
+package com.revined.revined.config;
 
 import com.google.gson.*;
 import org.springframework.beans.factory.annotation.Autowired;
