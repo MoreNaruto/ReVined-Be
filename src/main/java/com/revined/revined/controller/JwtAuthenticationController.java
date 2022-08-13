@@ -1,49 +1,31 @@
 package com.revined.revined.controller;
 
-import com.revined.revined.config.JwtTokenUtil;
 import com.revined.revined.request.JwtRequest;
+import com.revined.revined.request.SignUpRequest;
 import com.revined.revined.response.JwtResponse;
-import com.revined.revined.service.JwtUserDetailsService;
+import com.revined.revined.service.JwtAuthenticationService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
 public class JwtAuthenticationController {
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
-    private JwtUserDetailsService userDetailsService;
+    private JwtAuthenticationService jwtAuthenticationService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-
-        final UserDetails userDetails = userDetailsService
-                .loadUserByUsername(authenticationRequest.getUsername());
-
-        final String token = jwtTokenUtil.generateToken(userDetails);
+    public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+        String token = jwtAuthenticationService.createJWTToken(authenticationRequest.getEmail(), authenticationRequest.getPassword());
 
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    private void authenticate(String username, String password) throws Exception {
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
+    @RequestMapping(value = "/sign-up", method = RequestMethod.POST)
+    public ResponseEntity<String> signUp(@Valid @RequestBody SignUpRequest signUpRequest) throws Exception {
+        jwtAuthenticationService.createUser(signUpRequest);
+
+        return ResponseEntity.ok("Successfully created user");
     }
 }
