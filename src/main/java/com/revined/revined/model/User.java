@@ -1,15 +1,19 @@
 package com.revined.revined.model;
 
+import com.revined.revined.model.enums.Roles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -46,6 +50,14 @@ public class User implements UserDetails {
 
     @Column(name = "active")
     private boolean active;
+
+    @Column(name = "created_at")
+    @CreationTimestamp
+    private LocalDateTime created_at;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private LocalDateTime updated_at;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -58,7 +58,7 @@ public class SecurityConfig {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate", "/sign-up")
+                .antMatchers("/authenticate", "/sign-up", "/refresh-token")
                 .permitAll()
                 .anyRequest().authenticated().and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()

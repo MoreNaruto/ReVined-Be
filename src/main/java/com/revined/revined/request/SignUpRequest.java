@@ -1,6 +1,6 @@
 package com.revined.revined.request;
 
-import com.revined.revined.model.Roles;
+import com.revined.revined.model.enums.Roles;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,7 +18,7 @@ public class SignUpRequest implements Serializable {
     @Serial
     private static final long serialVersionUID = 5926468583005150707L;
 
-    @NotBlank
+    @NotBlank(message = "email must be provided")
     private String email;
 
     @NotBlank(message = "password must be provided")
