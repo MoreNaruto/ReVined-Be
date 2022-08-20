@@ -17,7 +17,7 @@ import java.util.UUID;
 
 @Service
 public class RefreshTokenService {
-    public static final long JWT_REFRESH_TOKEN_VALIDITY = Long.parseLong(System.getenv("JWT_REFRESH_EXPIRATION_IN_SECONDS"));
+    public static final long JWT_REFRESH_TOKEN_VALIDITY = Long.parseLong(System.getProperty("JWT_REFRESH_EXPIRATION_IN_SECONDS", "604800"));
 
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
