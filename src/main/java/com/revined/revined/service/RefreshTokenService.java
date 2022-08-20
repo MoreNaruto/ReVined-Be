@@ -7,6 +7,7 @@ import com.revined.revined.model.RefreshToken;
 import com.revined.revined.model.User;
 import com.revined.revined.repository.RefreshTokenRepository;
 import com.revined.revined.repository.UserRepository;
+import com.revined.revined.utils.Environments;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,8 +18,8 @@ import java.util.UUID;
 
 @Service
 public class RefreshTokenService {
-    public static final long JWT_REFRESH_TOKEN_VALIDITY = Long.parseLong(System.getProperty("JWT_REFRESH_EXPIRATION_IN_SECONDS", "604800"));
-
+    @Autowired
+    private Environments environments;
     @Autowired
     private RefreshTokenRepository refreshTokenRepository;
 
@@ -46,7 +47,7 @@ public class RefreshTokenService {
         RefreshToken refreshToken = RefreshToken
                 .builder()
                 .user(user)
-                .expiryDate(LocalDateTime.now().plusSeconds(JWT_REFRESH_TOKEN_VALIDITY))
+                .expiryDate(LocalDateTime.now().plusSeconds(Long.parseLong(environments.getVariable("JWT_REFRESH_EXPIRATION_IN_SECONDS"))))
                 .token(UUID.randomUUID().toString())
                 .build();
 

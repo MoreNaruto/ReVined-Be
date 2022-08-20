@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.revined.revined.advice.RefreshTokenNotFoundControllerAdvice;
 import com.revined.revined.advice.TokenControllerAdvice;
 import com.revined.revined.advice.UserNotFoundControllerAdvice;
+import com.revined.revined.model.enums.Roles;
 import com.revined.revined.request.JwtRequest;
 import com.revined.revined.request.LogoutRequest;
 import com.revined.revined.request.SignUpRequest;
@@ -12,7 +13,7 @@ import com.revined.revined.request.TokenRefreshRequest;
 import com.revined.revined.response.JwtResponse;
 import com.revined.revined.service.JwtAuthenticationService;
 import com.revined.revined.service.RefreshTokenService;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -77,11 +78,84 @@ class JwtAuthenticationControllerTest {
                 )
                 .andReturn().getResponse();
 
-        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-        Assertions.assertThat(response.getContentAsString()).isEqualTo(
+        Assertions.assertEquals(response.getStatus(), HttpStatus.OK.value());
+        Assertions.assertEquals(response.getContentAsString(),
                 jsonJwtResponse.write(JwtResponse.builder().token("token").refreshToken("refresh-token").build()).getJson()
         );
+    }
 
+    @Test
+    void postSignUp() throws Exception {
+        SignUpRequest signUpRequest = SignUpRequest
+                .builder()
+                .email("email")
+                .password("password")
+                .matchPassword("password")
+                .firstName("Bob")
+                .lastName("Dole")
+                .role(Roles.ADMIN)
+                .build();
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/sign-up")
+                                .content(asJsonString(signUpRequest))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andReturn().getResponse();
+
+        Assertions.assertEquals(response.getStatus(), HttpStatus.OK.value());
+        Assertions.assertEquals(response.getContentAsString(), "Successfully created user");
+    }
+
+    @Test
+    void postRefreshToken() throws Exception {
+        TokenRefreshRequest request = TokenRefreshRequest
+                .builder()
+                .refreshToken("refresh-token")
+                .build();
+
+        JwtResponse jwtResponse = JwtResponse
+                .builder()
+                .token("token")
+                .refreshToken("refresh-token")
+                .build();
+
+        given(mockRefreshTokenService.findTokenByRefreshToken("refresh-token"))
+                .willReturn("token");
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/refresh-token")
+                                .content(asJsonString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andReturn().getResponse();
+
+        Assertions.assertEquals(response.getStatus(), HttpStatus.OK.value());
+        Assertions.assertEquals(response.getContentAsString(), jsonJwtResponse.write(jwtResponse).getJson());
+    }
+
+    @Test
+    void postLogOut() throws Exception {
+        LogoutRequest request = LogoutRequest
+                .builder()
+                .email("email")
+                .build();
+
+        MockHttpServletResponse response = mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/log-out")
+                                .content(asJsonString(request))
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON)
+                )
+                .andReturn().getResponse();
+
+        Assertions.assertEquals(response.getStatus(), HttpStatus.OK.value());
+        Assertions.assertEquals(response.getContentAsString(), "Log out successful!");
     }
 
     private static String asJsonString(final Object obj) {

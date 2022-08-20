@@ -1,8 +1,10 @@
 package com.revined.revined.config;
 
+import com.revined.revined.utils.Environments;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -18,12 +20,11 @@ import java.util.function.Function;
 
 @Component
 public class JwtTokenUtil implements Serializable {
+    @Autowired
+    private Environments environments;
+
     @Serial
     private static final long serialVersionUID = -2550185165626007488L;
-
-    public static final long JWT_TOKEN_VALIDITY = Long.parseLong(System.getenv("JWT_EXPIRATION_IN_SECONDS"));
-
-    private final String secret = System.getenv("JWT_SECRET");
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -39,7 +40,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(environments.getVariable("JWT_SECRET")),
                 SignatureAlgorithm.HS256.getJcaName());
         return Jwts
                 .parserBuilder()
@@ -60,7 +61,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
-        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(secret),
+        Key hmacKey = new SecretKeySpec(Base64.getDecoder().decode(environments.getVariable("JWT_SECRET")),
                 SignatureAlgorithm.HS512.getJcaName());
 
         return Jwts
@@ -68,7 +69,7 @@ public class JwtTokenUtil implements Serializable {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(environments.getVariable("JWT_EXPIRATION_IN_SECONDS")) * 1000))
                 .signWith(hmacKey)
                 .compact();
     }
