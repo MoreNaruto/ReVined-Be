@@ -7,10 +7,11 @@ import com.revined.revined.request.TokenRefreshRequest;
 import com.revined.revined.response.JwtResponse;
 import com.revined.revined.service.JwtAuthenticationService;
 import com.revined.revined.service.RefreshTokenService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @CrossOrigin
