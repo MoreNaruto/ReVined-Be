@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static com.revined.revined.util.TestHelper.asJsonString;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -158,11 +159,5 @@ class JwtAuthenticationControllerTest {
         Assertions.assertEquals(response.getContentAsString(), "Log out successful!");
     }
 
-    private static String asJsonString(final Object obj) {
-        try {
-            return new Gson().toJson(obj);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+
 }

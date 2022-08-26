@@ -51,6 +51,10 @@ public class User implements UserDetails {
     @Column(name = "active")
     private boolean active;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime created_at;

@@ -12,6 +12,8 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -90,6 +92,9 @@ public class Wine {
             columnDefinition = "text[]"
     )
     private String[] foodPairing;
+
+    @ManyToMany(mappedBy = "wines")
+    private Set<Inventory> inventories = new HashSet<>();
 
     @Column(name = "created_at")
     @CreationTimestamp
