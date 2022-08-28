@@ -1,5 +1,6 @@
 package com.revined.revined.model;
 
+import com.revined.revined.model.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,6 +32,10 @@ public class Company {
 
     @Column(name = "description")
     private String description;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @OneToMany(mappedBy = "company")
     private Set<User> users;

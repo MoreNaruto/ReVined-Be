@@ -94,6 +94,7 @@ public class Wine {
     private String[] foodPairing;
 
     @ManyToMany(mappedBy = "wines")
+    @Builder.Default
     private Set<Inventory> inventories = new HashSet<>();
 
     @Column(name = "created_at")

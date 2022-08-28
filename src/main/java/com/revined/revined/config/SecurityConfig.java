@@ -1,6 +1,7 @@
 package com.revined.revined.config;
 
 import com.revined.revined.authentication.JwtAuthenticationEntryPoint;
+import com.revined.revined.model.enums.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,7 +61,10 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/authenticate", "/sign-up", "/refresh-token", "/log-out")
                 .permitAll()
-                .anyRequest().authenticated().and()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/super_admin/**").hasAuthority(Roles.SUPER_ADMIN.name())
+                .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 

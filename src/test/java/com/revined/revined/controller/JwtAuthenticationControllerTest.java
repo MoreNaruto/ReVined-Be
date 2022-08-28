@@ -94,7 +94,6 @@ class JwtAuthenticationControllerTest {
                 .matchPassword("password")
                 .firstName("Bob")
                 .lastName("Dole")
-                .role(Roles.ADMIN)
                 .build();
 
         MockHttpServletResponse response = mockMvc.perform(

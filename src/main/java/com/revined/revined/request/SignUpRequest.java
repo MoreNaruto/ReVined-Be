@@ -16,7 +16,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class SignUpRequest implements Serializable {
     @Serial
-    private static final long serialVersionUID = 5926468583005150707L;
+    private static final long serialVersionUID = 5588977845539209577L;
 
     @NotBlank(message = "email must be provided")
     private String email;
@@ -32,5 +32,4 @@ public class SignUpRequest implements Serializable {
 
     @NotBlank(message = "last name must be provided")
     private String lastName;
-    private Roles role;
 }

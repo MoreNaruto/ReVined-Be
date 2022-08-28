@@ -13,10 +13,13 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TokenRefreshRequest implements Serializable {
+public class    AddCompanyRequest implements Serializable {
     @Serial
-    private static final long serialVersionUID = 4867613225918743267L;
+    private static final long serialVersionUID = -8864415490708795585L;
 
-    @NotBlank(message = "refresh token must be provided")
-    private String refreshToken;
+    @NotBlank(message = "name must be provided")
+    private String name;
+
+    @NotBlank(message = "description must be provided")
+    private String description;
 }

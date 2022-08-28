@@ -14,7 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class LogoutRequest implements Serializable {
     @Serial
-    private static final long serialVersionUID = 6985998989835368238L;
+    private static final long serialVersionUID = -8076881707910103598L;
 
     private String email;
 }

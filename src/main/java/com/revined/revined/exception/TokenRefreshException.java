@@ -8,7 +8,7 @@ import java.io.Serial;
 @ResponseStatus(HttpStatus.FORBIDDEN)
 public class TokenRefreshException extends RuntimeException {
     @Serial
-    private static final long serialVersionUID = 5926468583005114707L;
+    private static final long serialVersionUID = -7771519308762260487L;
     public TokenRefreshException(String token, String message) {
         super(String.format("Failed for [%s]: %s", token, message));
     }

@@ -8,7 +8,7 @@ import java.io.Serial;
 @ResponseStatus(HttpStatus.FORBIDDEN)
 public class WineAlreadyExistsException extends RuntimeException{
     @Serial
-    private static final long serialVersionUID = -5498688956428652465L;
+    private static final long serialVersionUID = 6592056749101773980L;
     public WineAlreadyExistsException(String message) {
         super(message);
     }

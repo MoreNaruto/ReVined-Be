@@ -3,6 +3,7 @@ package com.revined.revined.service;
 import com.revined.revined.config.JwtTokenUtil;
 import com.revined.revined.exception.PasswordDoesNotMatchException;
 import com.revined.revined.model.User;
+import com.revined.revined.model.enums.Roles;
 import com.revined.revined.repository.UserRepository;
 import com.revined.revined.request.SignUpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class JwtAuthenticationService {
                         .email(request.getEmail())
                         .password(encryptedPassword)
                         .active(true)
-                        .role(request.getRole())
+                        .role(Roles.EMPLOYEE)
                         .build()
         );
     }

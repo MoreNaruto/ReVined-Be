@@ -6,10 +6,11 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import java.io.Serial;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class RefreshTokenNotFoundException extends RuntimeException{
+public class CompanyNotFoundException extends Exception {
     @Serial
-    private static final long serialVersionUID = -6930731995730375023L;
-    public RefreshTokenNotFoundException(String message) {
+    private static final long serialVersionUID = -5158421808926572842L;
+
+    public CompanyNotFoundException(String message) {
         super(message);
     }
 }

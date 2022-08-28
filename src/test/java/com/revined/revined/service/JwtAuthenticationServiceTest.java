@@ -52,7 +52,7 @@ class JwtAuthenticationServiceTest {
     void testCreateJWTToken() throws Exception {
         User user = User
                 .builder()
-                .role(Roles.ADMIN)
+                .role(Roles.EMPLOYEE)
                 .email("email")
                 .password("password")
                 .firstName("Bob")
@@ -95,7 +95,6 @@ class JwtAuthenticationServiceTest {
     @Test
     void testCreateUser() throws Exception {
         SignUpRequest request = SignUpRequest.builder()
-                .role(Roles.ADMIN)
                 .firstName("Bob")
                 .lastName("Dole")
                 .email("email")
@@ -113,13 +112,12 @@ class JwtAuthenticationServiceTest {
         assertEquals(capturedUser.getFirstName(), "Bob");
         assertEquals(capturedUser.getLastName(), "Dole");
         assertTrue(capturedUser.isActive());
-        assertEquals(capturedUser.getRole(), Roles.ADMIN);
+        assertEquals(capturedUser.getRole(), Roles.EMPLOYEE);
     }
 
     @Test
     void testCreateUserPasswordDoesNotMatchException() throws Exception {
         SignUpRequest request = SignUpRequest.builder()
-                .role(Roles.ADMIN)
                 .firstName("Bob")
                 .lastName("Dole")
                 .email("email")

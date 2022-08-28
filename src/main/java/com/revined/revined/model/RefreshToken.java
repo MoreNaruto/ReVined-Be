@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RefreshToken {
     @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
     private long id;
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")

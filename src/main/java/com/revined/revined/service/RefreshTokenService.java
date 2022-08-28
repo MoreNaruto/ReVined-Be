@@ -44,14 +44,23 @@ public class RefreshTokenService {
         if (user == null) {
             throw new UsernameNotFoundException(email);
         }
-        RefreshToken refreshToken = RefreshToken
+
+        RefreshToken defaultRefreshToken = RefreshToken
                 .builder()
-                .user(user)
-                .expiryDate(LocalDateTime.now().plusSeconds(Long.parseLong(environments.getVariable("JWT_REFRESH_EXPIRATION_IN_SECONDS"))))
-                .token(UUID.randomUUID().toString())
                 .build();
 
-        RefreshToken savedToken = refreshTokenRepository.save(refreshToken);
+        RefreshToken refreshToken = refreshTokenRepository.findByUserUuid(user.getUuid())
+                .orElse(defaultRefreshToken);
+
+        RefreshToken savedToken = refreshTokenRepository.save(
+                RefreshToken
+                        .builder()
+                        .id(refreshToken.getId())
+                        .user(user)
+                        .expiryDate(LocalDateTime.now().plusSeconds(Long.parseLong(environments.getVariable("JWT_REFRESH_EXPIRATION_IN_SECONDS"))))
+                        .token(UUID.randomUUID().toString())
+                        .build()
+        );
         return savedToken.getToken();
     }
 
