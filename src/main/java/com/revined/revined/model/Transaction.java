@@ -1,53 +1,45 @@
 package com.revined.revined.model;
 
-import com.revined.revined.model.enums.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "companies")
+@Table(name = "transactions")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Company {
+public class Transaction {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(name = "id", unique = true)
     private UUID uuid;
 
-    @Column(name = "name", nullable = false)
-    private String name;
+    @OneToOne
+    @JoinColumn(name = "inventory_id", referencedColumnName = "id")
+    private Inventory inventory;
 
-    @Column(name = "description")
-    private String description;
+    @OneToOne
+    @JoinColumn(name = "wine_id", referencedColumnName = "id")
+    private Wine wine;
 
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 
-    @OneToMany(mappedBy = "company")
-    private Set<User> users;
-
-    @OneToMany(mappedBy = "company")
-    private Set<Inventory> inventories;
+    @Column(name = "event")
+    private String event;
 
     @Column(name = "created_at")
     @CreationTimestamp
     private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 }
