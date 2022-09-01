@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
@@ -17,7 +18,7 @@ public class SuperAdminController {
     private CompanyService companyService;
 
     @RequestMapping(value = "/new/company", method = RequestMethod.POST)
-    public ResponseEntity<String> createCompany(@RequestBody AddCompanyRequest request) {
+    public ResponseEntity<String> createCompany(@Valid @RequestBody AddCompanyRequest request) {
         companyService.addCompany(request);
 
         return ResponseEntity.ok("Successfully created company");
@@ -26,7 +27,7 @@ public class SuperAdminController {
     @RequestMapping(value = "/add/user/company/{companyId}", method = RequestMethod.POST)
     public ResponseEntity<String> addUsersToCompany(
             @PathVariable("companyId") UUID companyId,
-            @RequestBody AddUsersToCompanyRequest request
+            @Valid @RequestBody AddUsersToCompanyRequest request
     ) {
         return ResponseEntity.ok(companyService.addUsersToCompany(request.getUsers(), companyId));
     }

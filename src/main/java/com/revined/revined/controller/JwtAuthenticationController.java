@@ -23,7 +23,7 @@ public class JwtAuthenticationController {
     private RefreshTokenService refreshTokenService;
 
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
-    public ResponseEntity<JwtResponse> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+    public ResponseEntity<JwtResponse> createAuthenticationToken(@Valid @RequestBody JwtRequest authenticationRequest) throws Exception {
         String token = jwtAuthenticationService.createJWTToken(authenticationRequest.getEmail(), authenticationRequest.getPassword());
         String refreshToken = refreshTokenService.createRefreshToken(authenticationRequest.getEmail());
 

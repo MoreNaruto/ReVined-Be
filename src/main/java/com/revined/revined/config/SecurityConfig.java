@@ -64,6 +64,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/super_admin/**").hasAuthority(Roles.SUPER_ADMIN.name())
+                .antMatchers("/admin/**").hasAnyAuthority(Roles.SUPER_ADMIN.name(), Roles.ADMIN.name())
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
