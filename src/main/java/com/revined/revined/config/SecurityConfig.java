@@ -57,14 +57,22 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity
-                .csrf().disable()
+                .csrf()
+                .ignoringAntMatchers("/authenticate", "/sign-up", "/refresh-token", "/log-out")
+                .and()
                 .authorizeRequests()
-                .antMatchers("/authenticate", "/sign-up", "/refresh-token", "/log-out")
+                .antMatchers("/authenticate", "/sign-up", "/refresh-token", "/log-out", "/csrf")
                 .permitAll()
                 .and()
                 .authorizeRequests()
                 .antMatchers("/super_admin/**").hasAuthority(Roles.SUPER_ADMIN.name())
                 .antMatchers("/admin/**").hasAnyAuthority(Roles.SUPER_ADMIN.name(), Roles.ADMIN.name())
+                .antMatchers("/wine/**").hasAnyAuthority(
+                        Roles.SUPER_ADMIN.name(),
+                        Roles.ADMIN.name(),
+                        Roles.MANAGER.name(),
+                        Roles.SUPERVISOR.name(),
+                        Roles.EMPLOYEE.name())
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
