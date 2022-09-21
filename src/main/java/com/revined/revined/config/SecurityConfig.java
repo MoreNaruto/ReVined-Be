@@ -58,10 +58,10 @@ public class SecurityConfig {
 
         httpSecurity
                 .csrf()
-                .ignoringAntMatchers("/authenticate", "/sign-up", "/refresh-token", "/log-out")
+                .ignoringAntMatchers("/authenticate", "/sign-up", "/refresh-token", "/log-out", "/reset-password", "/change-password", "/save-password")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/authenticate", "/sign-up", "/refresh-token", "/log-out", "/csrf")
+                .antMatchers("/authenticate", "/sign-up", "/refresh-token", "/log-out", "/csrf", "/reset-password", "/change-password", "/save-password")
                 .permitAll()
                 .and()
                 .authorizeRequests()
