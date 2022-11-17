@@ -21,8 +21,9 @@ public class RateLimitInterceptor implements HandlerInterceptor {
             throws Exception {
         String userCookieId = request.getHeader("User-Rackd-Cookie");
         if (userCookieId == null || userCookieId.isEmpty()) {
-            response.sendError(HttpStatus.BAD_REQUEST.value(), "Missing Header: User-Rackd-Cookie");
-            return false;
+//            response.sendError(HttpStatus.BAD_REQUEST.value(), "Missing Header: User-Rackd-Cookie");
+//            return false;
+            userCookieId = "something";
         }
         Bucket bucket = rateLimiterService.resolveBucket(userCookieId);
         ConsumptionProbe probe = bucket.tryConsumeAndReturnRemaining(1);
