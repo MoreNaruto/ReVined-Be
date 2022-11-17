@@ -70,7 +70,7 @@ public class SecurityConfig {
                 .ignoringAntMatchers("/authenticate", "/wine/**")
                 .and()
                 .cors()
-                .and()
+                .disable()
                 .authorizeRequests()
                 .antMatchers("/authenticate", "/sign-up", "/refresh-token", "/log-out", "/csrf", "/reset-password", "/change-password", "/save-password")
                 .permitAll()
