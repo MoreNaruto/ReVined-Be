@@ -20,7 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        String[] origins = new String[]{"http://localhost:8080", "https://www.rackd.io"};
+        String[] origins = new String[]{ "https://www.rackd.io", "http://localhost:8080"};
 
         registry
                 .addMapping("/**")
@@ -29,8 +29,15 @@ public class WebConfig implements WebMvcConfigurer {
                         HttpHeaders.CONTENT_TYPE,
                         HttpHeaders.ACCEPT,
                         HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,
+                        HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,
+                        HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,
+                        HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
+                        HttpHeaders.ORIGIN,
+                        "X-Requested-With",
                         "X-XSRF-TOKEN"
                 )
-                .allowedOrigins(origins);
+                .allowedOrigins(origins)
+                .allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS")
+                .allowCredentials(true);
     }
 }
