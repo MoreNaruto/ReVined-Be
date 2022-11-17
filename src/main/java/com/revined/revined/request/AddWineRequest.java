@@ -23,7 +23,9 @@ public class AddWineRequest implements Serializable {
     private String description;
     private String alohaCode;
     private String color;
+    @NotBlank(message = "producer must be provided")
     private String producer;
+    @NotBlank(message = "the year must be provided")
     private String vintage;
     private String[] grapes;
     private String[] aromas;
