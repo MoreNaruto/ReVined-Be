@@ -22,7 +22,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         String[] origins = Objects.equals(environments.getVariable("ENVIRONMENT"), "local") ?
                 new String[]{"*"} :
-                new String[]{"http://localhost:8080", "https://www.rackd.io", "https://re10shon-backend.herokuapp.com"};
+                new String[]{"http://localhost:8080", "https://www.rackd.io", "https://re10shon-backend.herokuapp.com/*"};
 
         registry
                 .addMapping("/**")
