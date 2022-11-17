@@ -20,7 +20,9 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        String[] origins = new String[]{ "https://www.rackd.io", "http://localhost:8080"};
+        String[] origins = Objects.equals(environments.getVariable("ENVIRONMENT"), "local") ?
+                new String[]{"*"} :
+                new String[]{"http://localhost:8080/", "https://www.rackd.io/"};
 
         registry
                 .addMapping("/**")
@@ -38,6 +40,6 @@ public class WebConfig implements WebMvcConfigurer {
                 )
                 .allowedOrigins(origins)
                 .allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS")
-                .allowCredentials(true);
+                .allowCredentials(!Objects.equals(environments.getVariable("ENVIRONMENT"), "local"));
     }
 }
