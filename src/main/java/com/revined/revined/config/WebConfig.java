@@ -1,6 +1,7 @@
 package com.revined.revined.config;
 
 import com.revined.revined.interceptor.RateLimitInterceptor;
+import com.revined.revined.interceptor.ResponseHeaderInterceptor;
 import com.revined.revined.utils.Environments;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,36 +25,39 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private RateLimitInterceptor rateLimitInterceptor;
 
+    @Autowired
+    private ResponseHeaderInterceptor responseHeaderInterceptor;
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(rateLimitInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(responseHeaderInterceptor).addPathPatterns("/**");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-//        String[] origins = Objects.equals(environments.getVariable("ENVIRONMENT"), "local") ?
-//                new String[]{"*"} :
-//                new String[]{"http://localhost:8080", "https://www.rackd.io", "https://re10shon-backend.herokuapp.com/*"};
-//
-//        registry
-//                .addMapping("/**")
-//                .allowedHeaders(
-//                        HttpHeaders.AUTHORIZATION,
-//                        HttpHeaders.CONTENT_TYPE,
-//                        HttpHeaders.ACCEPT,
-//                        HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,
-//                        HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,
-//                        HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,
-//                        HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
-//                        HttpHeaders.ORIGIN,
-//                        "X-Requested-With",
-//                        "X-XSRF-TOKEN",
-//                        "User-Rackd-Cookie"
-//                )
-//                .allowedOrigins(origins)
-//                .allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS")
-//                .allowCredentials(!Objects.equals(environments.getVariable("ENVIRONMENT"), "local"));
-        registry.addMapping("/**").allowedMethods("*");
+        String[] origins = Objects.equals(environments.getVariable("ENVIRONMENT"), "local") ?
+                new String[]{"*"} :
+                new String[]{"http://localhost:8080", "https://www.rackd.io", "https://re10shon-backend.herokuapp.com/*"};
+
+        registry
+                .addMapping("/**")
+                .allowedHeaders(
+                        HttpHeaders.AUTHORIZATION,
+                        HttpHeaders.CONTENT_TYPE,
+                        HttpHeaders.ACCEPT,
+                        HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN,
+                        HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS,
+                        HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS,
+                        HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
+                        HttpHeaders.ORIGIN,
+                        "X-Requested-With",
+                        "X-XSRF-TOKEN",
+                        "User-Rackd-Cookie"
+                )
+                .allowedOrigins(origins)
+                .allowedMethods("GET", "PUT", "POST", "DELETE", "OPTIONS")
+                .allowCredentials(!Objects.equals(environments.getVariable("ENVIRONMENT"), "local"));
     }
 }
