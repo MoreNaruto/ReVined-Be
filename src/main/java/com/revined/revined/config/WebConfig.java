@@ -1,9 +1,7 @@
 package com.revined.revined.config;
 
 import com.revined.revined.interceptor.RateLimitInterceptor;
-import com.revined.revined.interceptor.ResponseHeaderInterceptor;
 import com.revined.revined.utils.Environments;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -12,7 +10,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 @Configuration
@@ -25,21 +22,17 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private RateLimitInterceptor rateLimitInterceptor;
 
-    @Autowired
-    private ResponseHeaderInterceptor responseHeaderInterceptor;
-
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(rateLimitInterceptor).addPathPatterns("/**");
-        registry.addInterceptor(responseHeaderInterceptor).addPathPatterns("/**");
         WebMvcConfigurer.super.addInterceptors(registry);
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         String[] origins = Objects.equals(environments.getVariable("ENVIRONMENT"), "local") ?
-                new String[]{"*"} :
-                new String[]{"http://localhost:8080", "https://www.rackd.io:8080", "https://re10shon-backend.herokuapp.com"};
+                new String[]{"http://localhost:8080"} :
+                new String[]{"https://www.rackd.io"};
 
         registry
                 .addMapping("/**")
