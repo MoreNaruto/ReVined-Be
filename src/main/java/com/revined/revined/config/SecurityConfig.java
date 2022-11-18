@@ -66,7 +66,7 @@ public class SecurityConfig {
                 .requiresSecure()
                 .and()
                 .cors()
-                .disable()
+                .and()
                 .csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .ignoringAntMatchers("/authenticate", "/wine/**")
