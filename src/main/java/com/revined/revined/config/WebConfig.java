@@ -34,7 +34,6 @@ public class WebConfig implements WebMvcConfigurer {
         String[] origins = Objects.equals(environments.getVariable("ENVIRONMENT"), "local") ?
                 new String[]{"http://localhost:8080"} :
                 new String[]{"https://www.rackd.io"};
-        System.out.println("This is the current origins: " + Arrays.toString(origins));
         registry
                 .addMapping("/**")
                 .allowedHeaders(
