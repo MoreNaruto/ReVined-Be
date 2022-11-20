@@ -6,12 +6,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.lang.reflect.Type;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 @Configuration
 public class GsonConfig {
+    final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     @Bean
     public GsonBuilder gsonBuilder(List<GsonBuilderCustomizer> customizers) {
 
@@ -21,15 +26,11 @@ public class GsonConfig {
         /**
          * Custom Gson configuration
          */
-        builder.registerTypeHierarchyAdapter(LocalDateTime.class, new JsonSerializer<LocalDateTime>() {
+        builder.registerTypeHierarchyAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (src, typeOfSrc, context) ->
+                new JsonPrimitive(DATE_TIME_FORMATTER.format(src)));
 
-            final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-            @Override
-            public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {
-                return new JsonPrimitive(DATE_TIME_FORMATTER.format(src));
-            }
-        });
+        builder.registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, typeOfT, context) ->
+                LocalDateTime.parse(json.getAsString(), DATE_TIME_FORMATTER));
 
         return builder;
     }

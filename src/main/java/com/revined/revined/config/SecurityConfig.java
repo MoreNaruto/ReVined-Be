@@ -69,7 +69,7 @@ public class SecurityConfig {
                 .and()
                 .csrf()
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .ignoringAntMatchers("/authenticate", "/wine/**")
+                .ignoringAntMatchers("/authenticate")
                 .and()
                 .authorizeRequests()
                 .antMatchers("/authenticate", "/sign-up", "/refresh-token", "/log-out", "/csrf", "/reset-password", "/change-password", "/save-password")

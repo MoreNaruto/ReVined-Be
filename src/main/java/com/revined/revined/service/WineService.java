@@ -6,6 +6,9 @@ import com.revined.revined.request.AddWineRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 public class WineService {
     @Autowired
@@ -33,5 +36,13 @@ public class WineService {
                 .build();
 
         wineRepository.save(wine);
+    }
+
+    public List<Wine> getAllWines() {
+        return wineRepository.findAll();
+    }
+
+    public void deleteWine(UUID wineId) throws IllegalArgumentException  {
+        wineRepository.deleteById(wineId);
     }
 }
